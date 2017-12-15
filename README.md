@@ -1,13 +1,13 @@
 # envnewscrawler
 
-A crawler to crawl news sites and generate sentiment score for environmental news using python.
+A crawler to crawl news sites and generate a sentiment score for environmental news using Python.
 
-Input: URL of news sites  
-Output: Sentiment score
+Input: URL of news sites' main pages (with all the article titles)  
+Output: Sentiment score for each article
 
 ## Overview
 1. Build the lexicon we will use to identify environment-related news (keyword matching)
-- Identify keywords related to the environment (lexicon)
+- Identify keywords related to the environment. Possible sources:
   - Online
   - Thesaurus
   - Scrapping from environmental related websites
@@ -17,18 +17,28 @@ Output: Sentiment score
 3. Compute sentiment score
 - Using NLTK (nltk.vader)
 
-## Getting Started
+## Implementation 
 
-Input: raw html/htm file
+### Part 1
 
-Read all the lines from file -> save it into a list
-Create another empty list 
+Once we have found words related to environmental issues, we can save our lexicon into a .csv file.
 
-For each line in the list
-    check whether 'title-link__title-text' is inside the line
-    if inside:
-        store into the new list
-    else: (if not inside)
-        continue 
+### Part 2
+Input: URL
+Output: Articles related to the environment
 
-end goal: find lines that contain 'title-link__title-text'
+1. Fetch the raw html code from the given URL using requests.get()
+2. Identify patterns in code to sieve out what we are interested in (article links and article titles)
+3. Check whether each word in the title can be found in the lexicon. Filter out those that are below the threshold number of words in the title.
+4. Visit the links of the remaining article to retrieve the article's text.
+
+### Part 3
+Input: Articles
+Output: Sentiment score
+
+1. Perform sentiment analysis using nltk.vader in NLTK
+
+
+## Possible extensions
+0. Apply this to CNA, ST, and any other SG news sites to get an aggregate score.
+1. Develop a better lexicon
